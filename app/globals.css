@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+:root {
+  --haikei: #f7f7f7;
+  --mozi: #171717;
+}
+
 @font-face {
   font-family: "Ringo";
   src: local(-apple-system);
@@ -7,5 +12,7 @@
 }
 
 body {
+  background-color: var(--haikei);
+  color: var(--mozi);
   font-family: "Ringo", "SF Pro", "Hiragino Sans", system-ui, sans-serif;
 }

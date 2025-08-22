@@ -6,11 +6,7 @@ export const metadata: Metadata = {
   description: '私の家'
 }
 
-export default function Root({
-  children
-}: Readonly<{
-  children: React.ReactNode
-}>) {
+export default function Root({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="ja">
       <body className="antialiased">{children}</body>
