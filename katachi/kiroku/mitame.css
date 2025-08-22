@@ -1,5 +1,5 @@
 .paragraph {
-  font-size: 1.15rem;
+  font-size: 1.05rem;
   margin-bottom: 0.45rem;
 }
 
@@ -7,6 +7,34 @@
   font-weight: 600;
 }
 
+strong {
+  font-weight: 600;
+}
+
+.header {
+  margin-bottom: 0.45rem;
+}
+
 .h1 {
-  font-size: 1.65rem;
+  font-size: 1.55rem;
+}
+
+.h2 {
+  font-size: 1.45rem;
+}
+
+.h3 {
+  font-size: 1.35rem;
+}
+
+.h4 {
+  font-size: 1.25rem;
+}
+
+.h5 {
+  font-size: 1.15rem;
+}
+
+.h6 {
+  font-size: 1.05rem;
 }

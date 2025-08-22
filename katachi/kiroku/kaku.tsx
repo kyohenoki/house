@@ -15,6 +15,19 @@ import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin'
 import { MarkdownShortcutPlugin } from '@lexical/react/LexicalMarkdownShortcutPlugin'
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin'
 import { HeadingNode, QuoteNode } from '@lexical/rich-text'
+import type { EditorThemeClasses } from 'lexical'
+
+const kakutheme: EditorThemeClasses = {
+  paragraph: 'paragraph',
+  heading: {
+    h1: 'header h1',
+    h2: 'header h2',
+    h3: 'header h3',
+    h4: 'header h4',
+    h5: 'header h5',
+    h6: 'header h6'
+  }
+}
 
 export function Editor() {
   const editorConfig: InitialConfigType = {
@@ -22,13 +35,7 @@ export function Editor() {
     onError(error: Error) {
       throw error
     },
-    theme: {
-      paragraph: 'paragraph',
-      strong: 'strong',
-      heading: {
-        h1: 'h1'
-      }
-    },
+    theme: kakutheme,
     nodes: [HeadingNode, QuoteNode, ListNode, ListItemNode, CodeNode, LinkNode, AutoLinkNode, MarkNode]
   }
   return (
@@ -37,7 +44,7 @@ export function Editor() {
         <div className="relative text-stone-700">
           <RichTextPlugin
             contentEditable={<ContentEditable className="outline-none" />}
-            placeholder={<div className="absolute top-0 text-[1.15rem] text-stone-400 pointer-events-none">ここからはじまる</div>}
+            placeholder={<div className="absolute top-0 text-[1.05rem] text-stone-400 pointer-events-none">ここからはじまる</div>}
             ErrorBoundary={LexicalErrorBoundary}
           />
         </div>
