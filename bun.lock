@@ -4,7 +4,13 @@
     "": {
       "name": "house",
       "dependencies": {
+        "@lexical/code": "^0.34.0",
+        "@lexical/link": "^0.34.0",
+        "@lexical/list": "^0.34.0",
+        "@lexical/mark": "^0.34.0",
+        "@lexical/markdown": "^0.34.0",
         "@lexical/react": "^0.34.0",
+        "@lexical/rich-text": "^0.34.0",
         "lexical": "^0.34.0",
         "next": "^15.5.0",
         "react": "^19.1.1",
