@@ -1,0 +1,11 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "Ringo";
+  src: local(-apple-system);
+  unicode-range: U+00-52F, U+1E00-1FFF, U+2200-22FF;
+}
+
+body {
+  font-family: "Ringo", "SF Pro", "Hiragino Sans", system-ui, sans-serif;
+}
