@@ -1,3 +1,5 @@
+@import "tailwindcss";
+
 .paragraph {
   font-size: 1.05rem;
   margin-bottom: 0.45rem;
@@ -37,4 +39,10 @@ strong {
 
 .h6 {
   font-size: 1.05rem;
+}
+
+.coded {
+  @apply bg-stone-200 py-1 px-2 rounded-full;
+  font-size: 1rem;
+  font-family: "SF Mono", monospace;
 }

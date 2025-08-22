@@ -6,7 +6,8 @@
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
     "start": "next start",
-    "check": "biome check --write"
+    "check": "biome check --write",
+    "preview": "next build --turbopack && next start"
   },
   "dependencies": {
     "@lexical/code": "^0.34.0",

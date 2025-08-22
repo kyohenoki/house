@@ -35,6 +35,7 @@ export default function Kiroku() {
         <p className="paragraph">h5やh6は作る？使う？</p>
         <h5 className="header h5">h5だよ！</h5>
         <h6 className="header h6">h6は区別に使う？</h6>
+        <code className='coded'>console.log("Hello World")</code>
       </div>
     </div>
   )

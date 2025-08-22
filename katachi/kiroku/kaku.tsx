@@ -26,7 +26,8 @@ const kakutheme: EditorThemeClasses = {
     h4: 'header h4',
     h5: 'header h5',
     h6: 'header h6'
-  }
+  },
+  code: 'coded'
 }
 
 export function Editor() {
