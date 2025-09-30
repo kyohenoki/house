@@ -1,7 +1,8 @@
 @import 'tailwindcss';
+@plugin '@tailwindcss/typography';
 
 :root {
-  --haikei: #f1f2f4;
+  --haikei: #fafaf9;
   --mozi: #1c1e28;
   --sho: #66697a;
   --ao: #223fd2;
@@ -15,8 +16,8 @@
 }
 
 @font-face {
-  font-family: 'JetBrains Mono';
-  src: url('/fonts/JetBrainsMono.woff2');
+  font-family: 'Geist Mono';
+  src: url('/fonts/GeistMono.woff2');
 }
 
 body {
@@ -31,7 +32,7 @@ body {
 }
 
 code {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Geist Mono', monospace;
 }
 
 .link {

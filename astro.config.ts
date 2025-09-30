@@ -10,7 +10,7 @@ export default defineConfig({
     sitemap(),
     mdx({
       syntaxHighlight: 'shiki',
-      shikiConfig: { theme: 'one-light' },
+      shikiConfig: { theme: 'vitesse-light' },
     }),
   ],
   vite: {

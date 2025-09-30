@@ -1,0 +1,27 @@
+import { defineCollection, reference, z } from 'astro:content'
+import { glob } from 'astro/loaders'
+
+const kizis = defineCollection({
+  loader: glob({ pattern: '**/*.mdx', base: './src/content/kiroku' }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    slug: z.string(),
+    date: z.string(),
+    daowari: z.string(),
+    update: z.string(),
+    upowari: z.string(),
+    tags: z.array(reference('tags')),
+  }),
+})
+
+const tags = defineCollection({
+  loader: glob({ pattern: '**/*.json', base: './src/content/tags' }),
+  schema: z.object({
+    name: z.string(),
+    description: z.string(),
+    romazi: z.string(),
+  }),
+})
+
+export const collections = { kizis, tags }

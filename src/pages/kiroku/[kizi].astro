@@ -1,22 +1,34 @@
 ---
 import Kihon, { type Meta } from '@/katachi/kihon.astro'
 import Yohaku from '@/katachi/yohaku.astro'
-import { now } from '@/katachi/zikan'
+import { render } from 'astro:content'
+import { getEntry } from 'astro:content'
 
 export const prerender = false
 
-const { kizi } = Astro.params
+const kizi = Astro.params.kizi ?? ''
+const nakami = await getEntry('kizis', kizi)
 
-const nowt = now('d')
+if (!nakami) {
+  throw new Error('404')
+}
 
 const metadata: Meta = {
-  title: kizi,
+  title: nakami.data.title,
+  description: nakami.data.description,
 }
+
+const { Content } = await render(nakami)
 ---
 
 <Kihon metadata={metadata}>
-  <Yohaku className="text-[var(--sho)]">
-    <h1 class="mb-3">{kizi}</h1>
-    <h2>{nowt}</h2>
+  <Yohaku>
+    <h1 class="mb-2 text-[1.3rem] text-[var(--mozi)]">{nakami?.data.title}</h1>
+    <h2 class="mb-3 text-[1rem]">{nakami.data.daowari}</h2>
+    <div
+      class="prose prose-p:text-[1.1rem] prose-p:text-[var(--sho)] prose-p:mb-3 prose-pre:mt-0 prose-p:mt-0 prose-pre:mb-3 w-full max-w-none"
+    >
+      <Content />
+    </div>
   </Yohaku>
 </Kihon>
