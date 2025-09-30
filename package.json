@@ -5,13 +5,17 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview",
-    "start": "astro build && astro preview",
+    "preview": "wrangler dev",
+    "start": "astro build && wrangler dev",
     "astro": "astro",
     "format": "prettier . --write"
   },
   "dependencies": {
-    "astro": "^5.14.1"
+    "@astrojs/cloudflare": "^12.6.9",
+    "@astrojs/mdx": "^4.3.6",
+    "@astrojs/sitemap": "^3.6.0",
+    "astro": "^5.14.1",
+    "date-fns": "^4.1.0"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.1.13",
@@ -20,11 +24,13 @@
     "prettier-plugin-astro": "^0.14.1",
     "prettier-plugin-tailwindcss": "^0.6.14",
     "tailwindcss": "^4.1.13",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.2",
+    "wrangler": "^4.40.2"
   },
   "trustedDependencies": [
     "@tailwindcss/oxide",
     "esbuild",
-    "sharp"
+    "sharp",
+    "workerd"
   ]
 }

@@ -1,0 +1,22 @@
+---
+import Kihon, { type Meta } from '@/katachi/kihon.astro'
+import Yohaku from '@/katachi/yohaku.astro'
+import { now } from '@/katachi/zikan'
+
+export const prerender = false
+
+const { kizi } = Astro.params
+
+const nowt = now('d')
+
+const metadata: Meta = {
+  title: kizi,
+}
+---
+
+<Kihon metadata={metadata}>
+  <Yohaku className="text-[var(--sho)]">
+    <h1 class="mb-3">{kizi}</h1>
+    <h2>{nowt}</h2>
+  </Yohaku>
+</Kihon>

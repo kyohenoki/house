@@ -3,7 +3,7 @@ import '@/mitame/main.css'
 import '@/mitame/hiragino.css'
 
 export type Meta = {
-  title: string
+  title?: string
   description?: string
 }
 
@@ -16,6 +16,7 @@ const { metadata } = Astro.props
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
     <link rel="icon" href="/icon.png" />
     <link rel="preload" as="font" type="font/woff2" href="/fonts/InterVariable.woff2" crossorigin="anonymous" />
     <link rel="preload" as="font" type="font/woff2" href="/fonts/JetBrainsMono.woff2" crossorigin="anonymous" />
