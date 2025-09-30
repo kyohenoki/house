@@ -1,0 +1,15 @@
+---
+import Kihon, { type Meta } from '@/katachi/kihon.astro'
+import Yohaku from '@/katachi/yohaku.astro'
+
+const metadata: Meta = {
+  title: '記録帳',
+  description: 'ちょっとでも役に立てることが書けたらな',
+}
+---
+
+<Kihon metadata={metadata}>
+  <Yohaku>
+    <h1 class="text-[var(--sho)]">記録帳</h1>
+  </Yohaku>
+</Kihon>

@@ -1,0 +1,19 @@
+---
+import Kihon, { type Meta } from '@/katachi/kihon.astro'
+import Yohaku from '@/katachi/yohaku.astro'
+
+const metadata: Meta = {
+  title: 'kyohenoki',
+  description: '入口、私について、記録帳、これから',
+}
+---
+
+<Kihon metadata={metadata}>
+  <Yohaku>
+    <div class="mb-4 mt-1 aspect-[3/2] w-full bg-[var(--be)]"></div>
+    <h2 class="mb-3 text-[var(--sho)]">こんにちは、kyohenokiです</h2>
+    <a href="/me" class="link la mb-1.5">私について</a>
+    <a href="/kiroku" class="link la mb-1.5">記録帳</a>
+    <a href="/mada" class="link la mb-1.5">これから</a>
+  </Yohaku>
+</Kihon>

@@ -1,0 +1,43 @@
+@import 'tailwindcss';
+
+:root {
+  --haikei: #f1f2f4;
+  --mozi: #1c1e28;
+  --sho: #66697a;
+  --ao: #223fd2;
+  --ho: #2280d2;
+  --be: #c2b5a8;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/InterVariable.woff2');
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/JetBrainsMono.woff2');
+}
+
+body {
+  background-color: var(--haikei);
+  color: var(--mozi);
+  font-family: 'Inter', 'Hiragino Sans', 'Noto Sans JP', sans-serif;
+}
+
+::selection {
+  background-color: var(--mozi);
+  color: var(--haikei);
+}
+
+code {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.link {
+  @apply text-[var(--ao)] hover:text-[var(--ho)];
+}
+
+.la {
+  @apply transition-colors duration-300 ease-in-out;
+}
