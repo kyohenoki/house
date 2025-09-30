@@ -5,6 +5,8 @@
   --haikei: #fafaf9;
   --mozi: #1c1e28;
   --sho: #66697a;
+  --shf: #454753;
+  --usu: #e1dbd5;
   --ao: #223fd2;
   --ho: #2280d2;
   --be: #c2b5a8;
@@ -13,6 +15,7 @@
 @font-face {
   font-family: 'Inter';
   src: url('/fonts/InterVariable.woff2');
+  font-feature-settings: 'calt', 'cv10', 'cv08', 'cv05';
 }
 
 @font-face {
@@ -39,6 +42,49 @@ code {
   @apply text-[var(--ao)] hover:text-[var(--ho)];
 }
 
-.la {
-  @apply transition-colors duration-300 ease-in-out;
+.moziro {
+  @apply prose-p:text-[var(--sho)];
+}
+
+.kankaku {
+  @apply prose-p:mb-3 prose-pre:mt-0 prose-p:mt-0 prose-pre:mb-3;
+}
+
+.prose code::before,
+.prose code::after {
+  content: none !important;
+}
+
+.ugo {
+  @apply prose-pre:outline-[1.5px] prose-pre:outline-[var(--usu)];
+}
+
+.co {
+  @apply prose-code:text-[var(--sho)] prose-code:bg-[var(--usu)] prose-code:rounded-md prose-code:py-0.5 prose-code:px-1 prose-code:font-medium;
+}
+
+pre code {
+  background-color: transparent !important;
+  font-weight: normal !important;
+  padding: 0px !important;
+}
+
+.futo {
+  @apply prose-strong:text-[var(--shf)];
+}
+
+.prose a {
+  @apply text-[var(--ao)] no-underline hover:text-[var(--ho)];
+}
+
+.hey {
+  @apply prose-headings:mb-3 prose-headings:mt-4 prose-headings:text-[var(--mozi)] prose-headings:font-medium prose-h1:text-[1.55rem] prose-h2:text-[1.475rem] prose-h3:text-[1.35rem];
+}
+
+.heytwo {
+  @apply prose-h3:mb-2 prose-h3:mt-1 prose-h2:mb-2 prose-h2:mt-2 prose-h4:text-[1.275rem] prose-h4:mb-2 prose-h4:mt-2;
+}
+
+.bo {
+  @apply prose-hr:my-9;
 }

@@ -1,6 +1,8 @@
 ---
 import Kihon, { type Meta } from '@/katachi/kihon.astro'
 import Yohaku from '@/katachi/yohaku.astro'
+import { getCollection } from 'astro:content'
+import { miseru, tomili } from '@/katachi/zikan'
 
 export const prerender = false
 
@@ -8,10 +10,26 @@ const metadata: Meta = {
   title: '記録帳',
   description: 'ちょっとでも役に立てることが書けたらな',
 }
+
+const kizis = (await getCollection('kizis')).sort(
+  (a, b) => tomili(b.data.daowari, 'd') - tomili(a.data.daowari, 'd')
+)
 ---
 
 <Kihon metadata={metadata}>
   <Yohaku>
-    <h1 class="text-[var(--sho)]">記録帳</h1>
+    <h1 class="mb-2 text-[1.3rem] text-[var(--mozi)]">記録帳</h1>
+    <ul>
+      {
+        kizis.map((kizi) => (
+          <li class="mb-3">
+            <a href={`/kiroku/${kizi.id}`} class="mb-0.5 block font-medium">
+              {kizi.data.title}
+            </a>
+            <p class="text-[1rem]">{miseru(kizi.data.daowari)}</p>
+          </li>
+        ))
+      }
+    </ul>
   </Yohaku>
 </Kihon>

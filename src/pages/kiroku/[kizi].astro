@@ -3,6 +3,7 @@ import Kihon, { type Meta } from '@/katachi/kihon.astro'
 import Yohaku from '@/katachi/yohaku.astro'
 import { render } from 'astro:content'
 import { getEntry } from 'astro:content'
+import { miseru } from '@/katachi/zikan'
 
 export const prerender = false
 
@@ -10,13 +11,18 @@ const kizi = Astro.params.kizi ?? ''
 const nakami = await getEntry('kizis', kizi)
 
 if (!nakami) {
-  throw new Error('404')
+  return new Response(null, {
+    status: 404,
+    statusText: 'nanimonai',
+  })
 }
 
 const metadata: Meta = {
-  title: nakami.data.title,
+  title: `${nakami.data.title} ･ 記録帳`,
   description: nakami.data.description,
 }
+
+const daowari = miseru(nakami.data.daowari)
 
 const { Content } = await render(nakami)
 ---
@@ -24,10 +30,8 @@ const { Content } = await render(nakami)
 <Kihon metadata={metadata}>
   <Yohaku>
     <h1 class="mb-2 text-[1.3rem] text-[var(--mozi)]">{nakami?.data.title}</h1>
-    <h2 class="mb-3 text-[1rem]">{nakami.data.daowari}</h2>
-    <div
-      class="prose prose-p:text-[1.1rem] prose-p:text-[var(--sho)] prose-p:mb-3 prose-pre:mt-0 prose-p:mt-0 prose-pre:mb-3 w-full max-w-none"
-    >
+    <h2 class="mb-3 text-[1rem]">{daowari}</h2>
+    <div class="prose moziro kankaku ugo co futo hey heytwo bo w-full max-w-none">
       <Content />
     </div>
   </Yohaku>
