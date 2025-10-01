@@ -78,7 +78,7 @@ pre code {
 }
 
 .hey {
-  @apply prose-headings:mb-3 prose-headings:mt-4 prose-headings:text-[var(--mozi)] prose-headings:font-medium prose-h1:text-[1.55rem] prose-h2:text-[1.475rem] prose-h3:text-[1.35rem];
+  @apply prose-headings:mb-3 prose-headings:mt-3 prose-headings:text-[var(--mozi)] prose-headings:font-medium prose-h1:text-[1.55rem] prose-h2:text-[1.475rem] prose-h3:text-[1.35rem];
 }
 
 .heytwo {

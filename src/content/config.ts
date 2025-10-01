@@ -2,7 +2,7 @@ import { defineCollection, reference, z } from 'astro:content'
 import { glob } from 'astro/loaders'
 
 const kizis = defineCollection({
-  loader: glob({ pattern: '**/*.mdx', base: './src/content/kiroku' }),
+  loader: glob({ pattern: '**/[!_]*.mdx', base: './src/content/kiroku' }),
   schema: z.object({
     title: z.string(),
     description: z.string(),

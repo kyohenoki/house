@@ -1,0 +1,52 @@
+---
+import type { Meta } from '@/katachi/kihon.astro'
+import Kihon from '@/katachi/kihon.astro'
+import Yohaku from '@/katachi/yohaku.astro'
+import { getCollection } from 'astro:content'
+import { getEntry } from 'astro:content'
+import { miseru, tomili } from '@/katachi/zikan'
+
+export const prerender = false
+
+const tag = Astro.params.tag ?? ''
+
+const nakami = await getEntry('tags', tag)
+
+if (!nakami) {
+  return new Response(null, {
+    status: 404,
+    statusText: 'nanimonai',
+  })
+}
+
+const metadata: Meta = {
+  title: nakami.data.name,
+  description: nakami.data.description,
+}
+
+const ichi = (
+  await getCollection('kizis', (kizi) => kizi.data.tags.some((t) => t.id === nakami.id))
+).sort((a, b) => tomili(b.data.daowari, 'd') - tomili(a.data.daowari, 'd'))
+---
+
+<Kihon metadata={metadata}>
+  <Yohaku>
+    <h1 class="mb-2 text-[1.3rem] text-[var(--mozi)]">{nakami.data.name}</h1>
+    <h2 class="mb-2 text-[1rem]">{nakami.data.description}</h2>
+    <h2 class="mb-2 text-[1.1rem] text-[var(--mozi)]">このタグをつけてる記事</h2>
+    <ul>
+      {
+        ichi.map((kizi) => (
+          <li class="mb-3">
+            <p class="mb-0.5 text-[1.15rem]">
+              <a href={`/kiroku/${kizi.id}`} class="hover:text-[var(--ho)]">
+                {kizi.data.title}
+              </a>
+            </p>
+            <p class="mb-0.5 text-[1rem]">{miseru(kizi.data.daowari)}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </Yohaku>
+</Kihon>

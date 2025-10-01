@@ -14,19 +14,32 @@ const metadata: Meta = {
 const kizis = (await getCollection('kizis')).sort(
   (a, b) => tomili(b.data.daowari, 'd') - tomili(a.data.daowari, 'd')
 )
+const tags = await getCollection('tags')
 ---
 
 <Kihon metadata={metadata}>
   <Yohaku>
-    <h1 class="mb-2 text-[1.3rem] text-[var(--mozi)]">記録帳</h1>
+    <h1 class="mb-3 text-[1.3rem] text-[var(--mozi)]">記録帳</h1>
     <ul>
       {
         kizis.map((kizi) => (
           <li class="mb-3">
-            <a href={`/kiroku/${kizi.id}`} class="mb-0.5 block font-medium">
-              {kizi.data.title}
-            </a>
-            <p class="text-[1rem]">{miseru(kizi.data.daowari)}</p>
+            <p class="mb-0.5 text-[1.15rem]">
+              <a href={`/kiroku/${kizi.id}`} class="hover:text-[var(--ho)]">
+                {kizi.data.title}
+              </a>
+            </p>
+            <p class="mb-0.5 text-[1rem]">{miseru(kizi.data.daowari)}</p>
+            <div class="flex gap-2 text-[1rem]">
+              {kizi.data.tags.map((ref) => {
+                const tag = tags.find((t) => t.data.romazi === ref.id)
+                return (
+                  <a href={`/tags/${tag?.data.romazi}`} class="hover:text-[var(--ho)]">
+                    {tag?.data.name}
+                  </a>
+                )
+              })}
+            </div>
           </li>
         ))
       }

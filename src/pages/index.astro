@@ -10,10 +10,19 @@ const metadata: Meta = {
 
 <Kihon metadata={metadata}>
   <Yohaku>
-    <div class="mb-4 mt-1 aspect-[3/2] w-full bg-[var(--be)]"></div>
+    <div class="mb-5 mt-2 aspect-[3/2] w-full bg-[var(--be)]"></div>
     <h2 class="mb-3 text-[var(--sho)]">こんにちは、kyohenokiです</h2>
-    <a href="/me" class="link mb-1.5">私について</a>
-    <a href="/kiroku" class="link mb-1.5">記録帳</a>
-    <a href="/mada" class="link mb-3">これから</a>
+    <div class="mb-1.5 flex gap-2">
+      <a href="/me" class="link">私について</a>
+      <p>私について</p>
+    </div>
+    <div class="mb-1.5 flex gap-2">
+      <a href="/kiroku" class="link">記録帳</a>
+      <p>記録帳</p>
+    </div>
+    <div class="mb-1.5 flex gap-2">
+      <a href="/mada" class="link">これから</a>
+      <p>これから</p>
+    </div>
   </Yohaku>
 </Kihon>

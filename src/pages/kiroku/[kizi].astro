@@ -4,11 +4,14 @@ import Yohaku from '@/katachi/yohaku.astro'
 import { render } from 'astro:content'
 import { getEntry } from 'astro:content'
 import { miseru } from '@/katachi/zikan'
+import { getCollection } from 'astro:content'
 
 export const prerender = false
 
 const kizi = Astro.params.kizi ?? ''
+
 const nakami = await getEntry('kizis', kizi)
+const tags = await getCollection('tags')
 
 if (!nakami) {
   return new Response(null, {
@@ -30,9 +33,26 @@ const { Content } = await render(nakami)
 <Kihon metadata={metadata}>
   <Yohaku>
     <h1 class="mb-2 text-[1.3rem] text-[var(--mozi)]">{nakami?.data.title}</h1>
-    <h2 class="mb-3 text-[1rem]">{daowari}</h2>
+    <h2 class="mb-1 text-[1rem]">{daowari}</h2>
+    <div class="mb-2 text-[1rem]">
+      {
+        nakami.data.tags.map((ref) => {
+          const tag = tags.find((t) => t.data.romazi == ref.id)
+          return (
+            <a href={`/tags/${tag?.data.romazi}`} class="hover:text-[var(--ho)]">
+              {tag?.data.name}
+            </a>
+          )
+        })
+      }
+    </div>
     <div class="prose moziro kankaku ugo co futo hey heytwo bo w-full max-w-none">
       <Content />
+    </div>
+    <div class="my-1 mb-3">
+      <a href="/kiroku" class="text-[1.3rem] text-[var(--mozi)] hover:text-[var(--ho)]"
+        >&lt;- 戻る</a
+      >
     </div>
   </Yohaku>
 </Kihon>
