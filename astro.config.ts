@@ -12,7 +12,12 @@ export default defineConfig({
     react(),
     mdx({
       syntaxHighlight: 'shiki',
-      shikiConfig: { theme: 'vitesse-light' },
+      shikiConfig: {
+        themes: {
+          light: 'vitesse-light',
+          dark: 'vitesse-dark',
+        },
+      },
     }),
     (await import('@playform/compress')).default(),
   ],

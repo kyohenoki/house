@@ -18,7 +18,8 @@ const { metadata } = Astro.props
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
     <link rel="sitemap" href="/sitemap-index.xml" />
-    <link rel="icon" href="/icon.png" />
+    <link rel="icon" href="/icon.png" media="(prefers-color-scheme: light)" />
+    <link rel="icon" href="/akarui.png" media="(prefers-color-scheme: dark)" />
     <link rel="preload" as="font" type="font/woff2" href="/fonts/InterVariable.woff2" crossorigin="anonymous" />
     <link rel="preload" as="font" type="font/woff2" href="/fonts/GeistMono.woff2" crossorigin="anonymous" />
     <title>{metadata.title}</title>

@@ -13,6 +13,29 @@
   --bemo: #63594f;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --haikei: #1c1e28;
+    --mozi: #fafaf9;
+    --sho: #a5a9ba;
+    --shf: #bfc2d1;
+    --usu: #383634;
+    --ao: #81aff4;
+    --ho: #2280d2;
+    --be: #403c39;
+    --bemo: #918b87;
+  }
+
+  .astro-code,
+  .astro-code span {
+    color: var(--shiki-dark) !important;
+    background-color: var(--shiki-dark-bg) !important;
+    font-style: var(--shiki-dark-font-style) !important;
+    font-weight: var(--shiki-dark-font-weight) !important;
+    text-decoration: var(--shiki-dark-text-decoration) !important;
+  }
+}
+
 @font-face {
   font-family: 'Inter';
   src: url('/fonts/InterVariable.woff2');
