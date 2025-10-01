@@ -1,6 +1,7 @@
 ---
 import '@/mitame/main.css'
 import '@/mitame/hiragino.css'
+import 'overlayscrollbars/overlayscrollbars.css'
 
 export type Meta = {
   title?: string
@@ -11,31 +12,23 @@ const { metadata } = Astro.props
 ---
 
 <!doctype html>
-<html lang="ja">
+<html lang="ja" data-overlayscrollbars-initialize>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <link rel="icon" href="/icon.png" />
-    <link
-      rel="preload"
-      as="font"
-      type="font/woff2"
-      href="/fonts/InterVariable.woff2"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="preload"
-      as="font"
-      type="font/woff2"
-      href="/fonts/GeistMono.woff2"
-      crossorigin="anonymous"
-    />
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/InterVariable.woff2" crossorigin="anonymous" />
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/GeistMono.woff2" crossorigin="anonymous" />
     <title>{metadata.title}</title>
     <meta name="description" content={metadata.description} />
   </head>
-  <body class="antialiased">
+  <body class="antialiased" data-overlayscrollbars-initialize>
     <slot />
+    <script>
+      import { scrollbars } from './scrollbars'
+      scrollbars()
+    </script>
   </body>
 </html>

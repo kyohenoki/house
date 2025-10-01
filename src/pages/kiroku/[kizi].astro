@@ -39,7 +39,7 @@ const { Content } = await render(nakami)
         nakami.data.tags.map((ref) => {
           const tag = tags.find((t) => t.data.romazi == ref.id)
           return (
-            <a href={`/tags/${tag?.data.romazi}`} class="hover:text-[var(--ho)]">
+            <a href={`/tags/${tag?.data.romazi}`}>
               {tag?.data.name}
             </a>
           )
@@ -50,9 +50,7 @@ const { Content } = await render(nakami)
       <Content />
     </div>
     <div class="my-1 mb-3">
-      <a href="/kiroku" class="text-[1.3rem] text-[var(--mozi)] hover:text-[var(--ho)]"
-        >&lt;- 戻る</a
-      >
+      <a href="/kiroku" class="text-[1.3rem] text-[var(--mozi)]">&lt;- 戻る</a>
     </div>
   </Yohaku>
 </Kihon>

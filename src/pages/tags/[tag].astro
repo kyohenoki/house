@@ -24,9 +24,9 @@ const metadata: Meta = {
   description: nakami.data.description,
 }
 
-const ichi = (
-  await getCollection('kizis', (kizi) => kizi.data.tags.some((t) => t.id === nakami.id))
-).sort((a, b) => tomili(b.data.daowari, 'd') - tomili(a.data.daowari, 'd'))
+const ichi = (await getCollection('kizis', (kizi) => kizi.data.tags.some((t) => t.id === nakami.id))).sort(
+  (a, b) => tomili(b.data.daowari, 'd') - tomili(a.data.daowari, 'd')
+)
 ---
 
 <Kihon metadata={metadata}>
@@ -39,7 +39,7 @@ const ichi = (
         ichi.map((kizi) => (
           <li class="mb-3">
             <p class="mb-0.5 text-[1.15rem]">
-              <a href={`/kiroku/${kizi.id}`} class="hover:text-[var(--ho)]">
+              <a href={`/kiroku/${kizi.id}`}>
                 {kizi.data.title}
               </a>
             </p>

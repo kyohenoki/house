@@ -39,7 +39,7 @@ code {
 }
 
 .link {
-  @apply text-[var(--ao)] hover:text-[var(--ho)];
+  @apply text-[var(--ao)];
 }
 
 .moziro {

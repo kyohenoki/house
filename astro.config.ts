@@ -3,6 +3,7 @@ import tailwindcss from '@tailwindcss/vite'
 import sitemap from '@astrojs/sitemap'
 import mdx from '@astrojs/mdx'
 import cloudflare from '@astrojs/cloudflare'
+import react from '@astrojs/react'
 
 export default defineConfig({
   site: 'https://kyohenoki.com',
@@ -12,6 +13,7 @@ export default defineConfig({
       syntaxHighlight: 'shiki',
       shikiConfig: { theme: 'vitesse-light' },
     }),
+    react(),
   ],
   vite: {
     plugins: [tailwindcss()],
@@ -21,5 +23,8 @@ export default defineConfig({
   }),
   build: {
     assets: '_house',
+  },
+  devToolbar: {
+    enabled: false,
   },
 })

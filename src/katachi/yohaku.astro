@@ -1,12 +1,14 @@
 ---
+import Menu from './menu'
+
 const { className } = Astro.props
 ---
 
 <div class="flex w-full justify-center px-5 py-4 text-[1.1rem]">
   <div class="flex w-full max-w-3xl flex-col">
     <div class="mb-2 flex w-full justify-between">
-      <h1><a href="/" class="hover:text-[var(--ho)]">kyohenoki</a></h1>
-      <h2>menu</h2>
+      <h1><a href="/">kyohenoki</a></h1>
+      <Menu client:load />
     </div>
     <div class={`w-full flex flex-col text-[var(--sho)] ${className}`}>
       <slot />
