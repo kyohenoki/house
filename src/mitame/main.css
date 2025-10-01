@@ -10,6 +10,7 @@
   --ao: #223fd2;
   --ho: #2280d2;
   --be: #c2b5a8;
+  --bemo: #63594f;
 }
 
 @font-face {
@@ -40,6 +41,10 @@ code {
 
 .link {
   @apply text-[var(--ao)];
+}
+
+.linkb {
+  @apply hover:text-[var(--sho)];
 }
 
 .moziro {
@@ -86,5 +91,5 @@ pre code {
 }
 
 .bo {
-  @apply prose-hr:my-9;
+  @apply prose-hr:my-9 prose-hr:border-[var(--usu)];
 }

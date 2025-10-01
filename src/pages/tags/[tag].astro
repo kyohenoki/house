@@ -31,17 +31,15 @@ const ichi = (await getCollection('kizis', (kizi) => kizi.data.tags.some((t) => 
 
 <Kihon metadata={metadata}>
   <Yohaku>
-    <h1 class="mb-2 text-[1.3rem] text-[var(--mozi)]">{nakami.data.name}</h1>
-    <h2 class="mb-2 text-[1rem]">{nakami.data.description}</h2>
-    <h2 class="mb-2 text-[1.1rem] text-[var(--mozi)]">このタグをつけてる記事</h2>
+    <h1 class="mb-3 text-[1.3rem] text-[var(--mozi)]">{nakami.data.name}</h1>
+    <h2 class="mb-3 text-[1rem]">{nakami.data.description}</h2>
+    <h2 class="mb-3 text-[1.1rem] text-[var(--mozi)]">このタグをつけてる記事</h2>
     <ul>
       {
         ichi.map((kizi) => (
           <li class="mb-3">
             <p class="mb-0.5 text-[1.15rem]">
-              <a href={`/kiroku/${kizi.id}`}>
-                {kizi.data.title}
-              </a>
+              <a href={`/kiroku/${kizi.id}`}>{kizi.data.title}</a>
             </p>
             <p class="mb-0.5 text-[1rem]">{miseru(kizi.data.daowari)}</p>
           </li>

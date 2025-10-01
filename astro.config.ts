@@ -9,11 +9,12 @@ export default defineConfig({
   site: 'https://kyohenoki.com',
   integrations: [
     sitemap(),
+    react(),
     mdx({
       syntaxHighlight: 'shiki',
       shikiConfig: { theme: 'vitesse-light' },
     }),
-    react(),
+    (await import('@playform/compress')).default(),
   ],
   vite: {
     plugins: [tailwindcss()],

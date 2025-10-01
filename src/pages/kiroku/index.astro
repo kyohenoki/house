@@ -8,7 +8,7 @@ export const prerender = false
 
 const metadata: Meta = {
   title: '記録帳',
-  description: 'ちょっとでも役に立てることが書けたらな',
+  description: 'ちょっとでも役に立てることが書けたらいいな',
 }
 
 const kizis = (await getCollection('kizis')).sort((a, b) => tomili(b.data.daowari, 'd') - tomili(a.data.daowari, 'd'))
@@ -23,19 +23,13 @@ const tags = await getCollection('tags')
         kizis.map((kizi) => (
           <li class="mb-3">
             <p class="mb-0.5 text-[1.15rem]">
-              <a href={`/kiroku/${kizi.id}`}>
-                {kizi.data.title}
-              </a>
+              <a href={`/kiroku/${kizi.id}`}>{kizi.data.title}</a>
             </p>
             <p class="mb-0.5 text-[1rem]">{miseru(kizi.data.daowari)}</p>
             <div class="flex gap-2 text-[1rem]">
               {kizi.data.tags.map((ref) => {
                 const tag = tags.find((t) => t.data.romazi === ref.id)
-                return (
-                  <a href={`/tags/${tag?.data.romazi}`}>
-                    {tag?.data.name}
-                  </a>
-                )
+                return <a href={`/tags/${tag?.data.romazi}`}>{tag?.data.name}</a>
               })}
             </div>
           </li>
