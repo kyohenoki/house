@@ -5,3 +5,6 @@
 .wrangler
 
 .DS_Store
+
+.env
+.volume
