@@ -7,12 +7,6 @@
   "dev": {
     "port": 4321,
   },
-  "r2_buckets": [
-    {
-      "binding": "KIROKU",
-      "bucket_name": "kiroku",
-    },
-  ],
   "env": {
     "main": {
       "assets": {
@@ -24,6 +18,16 @@
     "ageru": {
       "name": "kiroku",
       "main": "./src/ageru/main.ts",
+      "r2_buckets": [
+        {
+          "binding": "KIROKU",
+          "bucket_name": "kiroku",
+        },
+      ],
+    },
+    "dasu": {
+      "name": "dasu",
+      "main": "./src/content/loader/dasu.ts",
     },
   },
 }

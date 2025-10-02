@@ -48,8 +48,8 @@ export async function s3(s?: string) {
   } else {
     const kizis = await sagasu('.', '../content/kiroku', 'mdx')
     const tags = await sagasu('.', '../content/tags', 'json')
-    await kaku(tags, bucket, 'application/json', 'text')
-    await kaku(kizis, bucket, 'text/markdown', 'text')
+    await kaku(kizis, bucket, 'text/markdown', 'kizis.json', 'text')
+    await kaku(tags, bucket, 'application/json', 'tags.json', 'text')
   }
 }
 
@@ -74,7 +74,7 @@ async function putObject(name: string, key: string, nakami: string, ctype: strin
   }
 }
 
-async function kaku(kizis: string[], bucket: string, ctype: string, ist: 'text' | 'binary') {
+async function kaku(kizis: string[], bucket: string, ctype: string, john: string, ist: 'text' | 'binary') {
   let list: { paths: string[] } = {
     paths: [],
   }
@@ -96,7 +96,7 @@ async function kaku(kizis: string[], bucket: string, ctype: string, ist: 'text' 
     }
   }
   const json = JSON.stringify(list, null, 2)
-  await putObject(bucket, 'kizis.json', json, ctype)
+  await putObject(bucket, john, json, 'application/json')
 }
 
 async function getObject(name: string, key: string) {
