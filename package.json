@@ -9,6 +9,8 @@
     "start": "astro build && wrangler dev --env main",
     "astro": "astro",
     "format": "prettier . --write",
+    "check": "biome check --write",
+    "fc": "prettier . --write && biome check --write",
     "types": "wrangler types",
     "ageru": "wrangler dev --env ageru",
     "am": "tsx src/ageru/cmd.ts"
@@ -29,6 +31,7 @@
     "react-dom": "^19.1.1"
   },
   "devDependencies": {
+    "@biomejs/biome": "2.2.4",
     "@playform/compress": "0.2.0",
     "@tailwindcss/typography": "^0.5.19",
     "@tailwindcss/vite": "^4.1.14",

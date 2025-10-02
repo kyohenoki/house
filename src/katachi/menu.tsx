@@ -7,7 +7,7 @@ export function Menu() {
   const [open, setOpen] = useAtom(menu)
   return (
     <div>
-      <button className="cursor-pointer" onClick={() => setOpen((prev) => !prev)}>
+      <button type="button" className="cursor-pointer" onClick={() => setOpen((prev) => !prev)}>
         {open ? 'close' : 'menu'}
       </button>
     </div>

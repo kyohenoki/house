@@ -1,7 +1,10 @@
 import 'dotenv/config'
 
-import { CreateBucketCommand, S3Client } from '@aws-sdk/client-s3'
+import { readFileSync } from 'node:fs'
+import path from 'node:path'
+import { CreateBucketCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
 import { z } from 'astro/zod'
+import { directory } from './files'
 
 const Envs = z.object({
   LOCALSTACK_ENDPOINT: z.string(),
@@ -22,6 +25,8 @@ const client = new S3Client({
   },
 })
 
+const bucket = 'kiroku'
+
 async function createBucket(name: string) {
   try {
     await client.send(
@@ -35,6 +40,32 @@ async function createBucket(name: string) {
   }
 }
 
-export async function s3() {
-  await createBucket('kiroku')
+export async function s3(s?: string) {
+  if (s === 'create') {
+    await createBucket(bucket)
+  } else {
+    await upload('../content/kiroku/ooo.mdx', 'text/markdown')
+  }
+}
+
+async function upload(filename: string, type: string) {
+  const filepath = path.join(directory, filename)
+  const nakami = readFileSync(filepath, 'utf-8')
+  await putObject(bucket, filename, nakami, type)
+}
+
+async function putObject(name: string, key: string, nakami: string, ctype: string) {
+  try {
+    await client.send(
+      new PutObjectCommand({
+        Bucket: name,
+        Key: key,
+        Body: nakami,
+        ContentType: ctype,
+      })
+    )
+    console.log(`${key} was put in the database`)
+  } catch (err) {
+    console.log(err)
+  }
 }

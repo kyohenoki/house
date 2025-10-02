@@ -1,8 +1,8 @@
-import { globby } from 'globby'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { globby } from 'globby'
 
-const directory = path.dirname(fileURLToPath(import.meta.url))
+export const directory = path.dirname(fileURLToPath(import.meta.url))
 
 export async function files() {
   console.log(await sagasu('.', '../content/kiroku', 'mdx'))
