@@ -10,10 +10,10 @@
     "astro": "astro",
     "format": "prettier . --write",
     "check": "biome check --write",
-    "fc": "prettier . --write && biome check --write",
+    "fc": "biome check --write && prettier . --write",
     "types": "wrangler types",
-    "ageru": "wrangler dev --env ageru",
-    "am": "tsx src/ageru/cmd.ts"
+    "aw": "wrangler dev --env ageru",
+    "ageru": "tsx src/ageru/cmd.ts"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^12.6.9",
