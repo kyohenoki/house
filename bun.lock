@@ -16,6 +16,7 @@
         "date-fns": "^4.1.0",
         "dotenv": "^17.2.3",
         "globby": "^15.0.0",
+        "idtsukuru": "^0.2.0",
         "jotai": "^2.15.0",
         "overlayscrollbars": "^2.12.0",
         "react": "^19.2.0",
@@ -881,6 +882,8 @@
     "html-void-elements": ["html-void-elements@3.0.0", "", {}, "sha512-bEqo66MRXsUGxWHV5IP0PUiAWwoEjba4VCzg0LjFJBpchPaTfyfCKTG6bc5F8ucKec3q5y6qOdGyYTSBEvhCrg=="],
 
     "http-cache-semantics": ["http-cache-semantics@4.2.0", "", {}, "sha512-dTxcvPXqPvXBQpq5dUr6mEMJX4oIEFv6bwom3FDwKRDsuIjjJGANqhBuoAn9c1RQJIdAKav33ED65E2ys+87QQ=="],
+
+    "idtsukuru": ["idtsukuru@0.2.0", "", { "dependencies": { "prompts": "^2.4.2" }, "bin": { "idtsukuru": "dist/cmd.js" } }, "sha512-Z+5YHFhe2FOR7bYXf3oaRZ9O+me8lRhzk8X/OFZqeO3uqQWMITFw2VCQldDujQLDxJcR7gKvOIOMQkliHH14SQ=="],
 
     "ignore": ["ignore@7.0.5", "", {}, "sha512-Hs59xBNfUIunMFgWAbGX5cq6893IbWg4KnrjbYwX3tx0ztorVgTDA6B2sxf8ejHJ4wz8BqGUMYlnzNBer5NvGg=="],
 

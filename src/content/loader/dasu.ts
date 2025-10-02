@@ -6,13 +6,17 @@ import { SignatureV4 } from '@smithy/signature-v4'
 
 export default {
   async fetch() {
-    return await getk()
+    const res = await getk()
+    return res
   },
 }
 
 export async function getk() {
-  return await kiziloader({ john: 'kizis.json' })
+  return await kiziloader({ john: 'tags.json', ctype: 'application/json' })
 }
+
+// JSON 'application/json'
+// MD 'text/markdown'
 
 // ${env.LOCALSTACK_ENDPOINT}/${env.BUCKET_NAME}/kizis.json
 // content collection データを return で返す、眠いから一旦寝る 13:09
@@ -22,9 +26,9 @@ export async function getk() {
 
 // 22:52 john というのは json name のことで、私は json をジョンソンと呼んでいる
 
-const kiziloader = async (options: { john: string }) => {
+const kiziloader = async (options: { john: string; ctype: string }) => {
   // const schema = kizischema
-  return await kiziload(options.john)
+  return await kiziload(options.john, options.ctype)
 }
 
 /*
@@ -40,7 +44,7 @@ const kizischema = z.object({
 })
   */
 
-const kiziload = async (john: string) => {
+const kiziload = async (john: string, ctype: string) => {
   const request = new HttpRequest({
     protocol: 'http:',
     hostname: env.ENDPOINT_NOT_LOCALHOST,
@@ -59,11 +63,11 @@ const kiziload = async (john: string) => {
     const ctx = await res.text()
     return new Response(ctx, {
       status: 200,
-      headers: { "content-type": "application/json" }
+      headers: { 'content-type': ctype },
     })
   } catch (err) {
     return new Response(String(err), {
-      status: 404
+      status: 404,
     })
   }
 }

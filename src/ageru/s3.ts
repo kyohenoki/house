@@ -6,6 +6,7 @@ import path from 'node:path'
 import { CreateBucketCommand, GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
 import { z } from 'astro/zod'
 import { directory, sagasu } from './files'
+import { tsukuru } from 'idtsukuru'
 
 const Envs = z.object({
   LOCALSTACK_ENDPOINT: z.string(),
@@ -74,9 +75,11 @@ async function putObject(name: string, key: string, nakami: string, ctype: strin
   }
 }
 
+// let list = { paths: [] as { id: string, ki: string}[] }
+
 async function kaku(kizis: string[], bucket: string, ctype: string, john: string, ist: 'text' | 'binary') {
   let list: { paths: string[] } = {
-    paths: [],
+    paths: []
   }
   for (const kizi of kizis) {
     const nakami = await read(kizi)
