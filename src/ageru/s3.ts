@@ -1,16 +1,18 @@
 import 'dotenv/config'
 
-import { readFileSync } from 'node:fs'
+import { createHash } from 'node:crypto'
+import { readFile } from 'node:fs/promises'
 import path from 'node:path'
-import { CreateBucketCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
+import { CreateBucketCommand, GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
 import { z } from 'astro/zod'
-import { directory } from './files'
+import { directory, sagasu } from './files'
 
 const Envs = z.object({
   LOCALSTACK_ENDPOINT: z.string(),
   AWS_ACCESS_KEY_ID: z.string(),
   AWS_SECRET_ACCESS_KEY: z.string(),
   AWS_REGION: z.string(),
+  BUCKET_NAME: z.string(),
 })
 
 const env = Envs.parse(process.env)
@@ -25,7 +27,7 @@ const client = new S3Client({
   },
 })
 
-const bucket = 'kiroku'
+const bucket = env.BUCKET_NAME
 
 async function createBucket(name: string) {
   try {
@@ -44,14 +46,16 @@ export async function s3(s?: string) {
   if (s === 'create') {
     await createBucket(bucket)
   } else {
-    await upload('../content/kiroku/ooo.mdx', 'text/markdown')
+    const kizis = await sagasu('.', '../content/kiroku', 'mdx')
+    const tags = await sagasu('.', '../content/tags', 'json')
+    await kaku(tags, bucket, 'application/json', 'text')
+    await kaku(kizis, bucket, 'text/markdown', 'text')
   }
 }
 
-async function upload(filename: string, type: string) {
+async function read(filename: string) {
   const filepath = path.join(directory, filename)
-  const nakami = readFileSync(filepath, 'utf-8')
-  await putObject(bucket, filename, nakami, type)
+  return await readFile(filepath, 'utf-8')
 }
 
 async function putObject(name: string, key: string, nakami: string, ctype: string) {
@@ -67,5 +71,51 @@ async function putObject(name: string, key: string, nakami: string, ctype: strin
     console.log(`${key} was put in the database`)
   } catch (err) {
     console.log(err)
+  }
+}
+
+async function kaku(kizis: string[], bucket: string, ctype: string, ist: 'text' | 'binary') {
+  let list: { paths: string[] } = {
+    paths: [],
+  }
+  for (const kizi of kizis) {
+    const nakami = await read(kizi)
+    const hash = createHash('sha256').update(nakami).digest('hex')
+    const sonzai = await getObject(bucket, kizi)
+    list.paths.push(kizi)
+    if (typeof sonzai === 'string') {
+      await putObject(bucket, kizi, nakami, ctype)
+    } else {
+      const content = istreturn(await sonzai.Body!.transformToByteArray(), ist)
+      const hashtw = createHash('sha256').update(content).digest('hex')
+      if (hash === hashtw) {
+        console.log('no change')
+      } else {
+        await putObject(bucket, kizi, nakami, ctype)
+      }
+    }
+  }
+  const json = JSON.stringify(list, null, 2)
+  await putObject(bucket, 'kizis.json', json, ctype)
+}
+
+async function getObject(name: string, key: string) {
+  try {
+    return await client.send(
+      new GetObjectCommand({
+        Bucket: name,
+        Key: key,
+      })
+    )
+  } catch (err) {
+    return String(err)
+  }
+}
+
+function istreturn(by: Uint8Array<ArrayBufferLike>, ist: 'text' | 'binary') {
+  if (ist === 'text') {
+    return new TextDecoder('utf-8').decode(by)
+  } else {
+    return by
   }
 }

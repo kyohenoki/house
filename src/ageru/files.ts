@@ -9,7 +9,7 @@ export async function files() {
   console.log(await sagasu('.', '../content/tags', 'json'))
 }
 
-async function sagasu(sapath: string, dir: string, ext: string) {
+export async function sagasu(sapath: string, dir: string, ext: string) {
   const base = path.resolve(directory, sapath)
   const files = await globby([`${dir}/**/*.${ext}`, `!${dir}/**/_*.${ext}`], {
     cwd: directory,
