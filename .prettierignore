@@ -1,1 +1,3 @@
 worker-configuration.d.ts
+*.ts
+*.tsx

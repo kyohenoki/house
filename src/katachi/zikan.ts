@@ -1,4 +1,4 @@
-import { format, parse } from 'date-fns'
+import { format, isValid, parse } from 'date-fns'
 
 export function now(fm?: string) {
   const date = new Date()
@@ -15,7 +15,12 @@ export function now(fm?: string) {
 
 export function miseru(zi: string) {
   const kata = parse(zi, 'yyyy/MM/dd HH:mm', new Date())
-  return format(kata, 'yyyy年M月d日 H:mm')
+  // もし変換できない、つまり変だったり未入力なら
+  if (isValid(kata)) {
+    return format(kata, 'yyyy年M月d日 H:mm')
+  } else {
+    return '時間が未設定'
+  }
 }
 
 export function tomili(tx: string, fm: string) {

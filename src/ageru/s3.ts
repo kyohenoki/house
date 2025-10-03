@@ -5,7 +5,7 @@ import { readFile } from 'node:fs/promises'
 import path from 'node:path'
 import { CreateBucketCommand, GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
 import { z } from 'astro/zod'
-// import { tsukuru } from 'idtsukuru'
+import { tsukuru } from 'idtsukuru'
 import { directory, sagasu } from './files'
 
 const Envs = z.object({
@@ -43,14 +43,21 @@ async function createBucket(name: string) {
   }
 }
 
+async function upload() {
+  const kizis = await sagasu('.', '../content/kiroku', 'mdx')
+  const tags = await sagasu('.', '../content/tags', 'json')
+  await kaku(kizis, bucket, 'text/markdown', 'mdx', 'kizis.json', 'text')
+  await kaku(tags, bucket, 'application/json', 'json', 'tags.json', 'text')
+}
+
 export async function s3(s?: string) {
   if (s === 'create') {
     await createBucket(bucket)
+  } else if (s === 'upload') {
+    await upload()
   } else {
-    const kizis = await sagasu('.', '../content/kiroku', 'mdx')
-    const tags = await sagasu('.', '../content/tags', 'json')
-    await kaku(kizis, bucket, 'text/markdown', 'kizis.json', 'text')
-    await kaku(tags, bucket, 'application/json', 'tags.json', 'text')
+    await createBucket(bucket)
+    await upload()
   }
 }
 
@@ -75,22 +82,22 @@ async function putObject(name: string, key: string, nakami: string, ctype: strin
   }
 }
 
-// let list = { paths: [] as { key: string, basho: string}[] }
-
-// const key = tsukuru({
-//  mozi: 'osusume',
-//  nagasa: 20
-// })
-
-async function kaku(kizis: string[], bucket: string, ctype: string, john: string, ist: 'text' | 'binary') {
-  let list: { paths: string[] } = {
-    paths: [],
-  }
-  for (const kizi of kizis) {
-    const nakami = await read(kizi)
+async function kaku(kizis: string[], bucket: string, ctype: string, ext: string, john: string, ist: 'text' | 'binary') {
+  let list = { paths: [] as { key: string; name: string }[] }
+  const kizon = await hairetsu(bucket, john)
+  let count = 0
+  while (kizis.length > count) {
+    const nakami = await read(kizis[count])
+    let kizi = `${tsukuru({
+      mozi: '16',
+      nagasa: 10,
+    })}.${ext}`
+    if (typeof kizon !== 'undefined') {
+      kizi = kizon.paths[count].key
+    }
     const hash = createHash('sha256').update(nakami).digest('hex')
     const sonzai = await getObject(bucket, kizi)
-    list.paths.push(kizi)
+    list.paths.push({ key: kizi, name: kizis[count] })
     if (typeof sonzai === 'string') {
       await putObject(bucket, kizi, nakami, ctype)
     } else {
@@ -102,9 +109,28 @@ async function kaku(kizis: string[], bucket: string, ctype: string, john: string
         await putObject(bucket, kizi, nakami, ctype)
       }
     }
+    count += 1
   }
   const json = JSON.stringify(list, null, 2)
   await putObject(bucket, john, json, 'application/json')
+}
+
+async function hairetsu(bucket: string, john: string) {
+  const retsu = await getObject(bucket, john)
+  if (typeof retsu !== 'string') {
+    const by = istreturn(await retsu.Body!.transformToByteArray(), 'text')
+    if (typeof by === 'string') {
+      const ure: Ure = JSON.parse(by)
+      return ure
+    }
+  }
+}
+
+type Ure = {
+  paths: {
+    key: string
+    name: string
+  }[]
 }
 
 async function getObject(name: string, key: string) {

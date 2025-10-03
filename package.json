@@ -26,6 +26,7 @@
     "date-fns": "^4.1.0",
     "dotenv": "^17.2.3",
     "globby": "^15.0.0",
+    "hono": "^4.9.9",
     "idtsukuru": "^0.2.0",
     "jotai": "^2.15.0",
     "overlayscrollbars": "^2.12.0",

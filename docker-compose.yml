@@ -7,6 +7,7 @@ services:
       - '127.0.0.1:4510-4559:4510-4559'
     environment:
       - DEBUG=${DEBUG:-0}
+      - TZ=Asia/Tokyo
     env_file:
       - .env
     volumes:
