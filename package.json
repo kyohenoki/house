@@ -5,8 +5,8 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "wrangler dev --env main",
-    "start": "astro build && wrangler dev --env main",
+    "preview": "wrangler dev --env main --port 4321",
+    "start": "astro build && wrangler dev --env main --port 4321",
     "astro": "astro",
     "check": "biome check --write && prettier . --write",
     "types": "wrangler types",
