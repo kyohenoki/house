@@ -14,10 +14,6 @@
         "directory": "./dist",
         "html_handling": "drop-trailing-slash",
       },
-    },
-    "ageru": {
-      "name": "kiroku",
-      "main": "./src/ageru/main.ts",
       "r2_buckets": [
         {
           "binding": "KIROKU",

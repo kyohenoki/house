@@ -8,11 +8,8 @@
     "preview": "wrangler dev --env main",
     "start": "astro build && wrangler dev --env main",
     "astro": "astro",
-    "format": "prettier . --write",
-    "check": "biome check --write",
-    "fc": "biome check --write && prettier . --write",
+    "check": "biome check --write && prettier . --write",
     "types": "wrangler types",
-    "aw": "wrangler dev --env ageru",
     "ageru": "tsx src/ageru/cmd.ts",
     "dasu": "wrangler dev --env dasu"
   },
