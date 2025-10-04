@@ -8,11 +8,19 @@
 
 - [x] 大体
 
-- [x] Workersで動くようにする
+- [ ] Workers で動くようにする
 
 - [ ] 一通り完成したら記事を書いて公開する
 
 ### 開発
+
+依存関係などをリセットする
+以下の Shell ファイルを初めて実行する場合は権限もつけておく
+
+```
+chmod +x cmd.sh
+bun reset
+```
 
 LocalStack というR2互換S3のサーバーを立ち上げる
 
@@ -32,20 +40,32 @@ bun ageru [cmd]
 bun ageru s3
 ```
 
+ファイルの通信のテスト（今まで使っていたが必要なくなるもの）
+
+```
+bun dasu
+```
+
+Astro の開発サーバーを建てる
+
+```
+bun dev
+```
+
 Biome と Prettier を同時に（ESLint か Oxlint をいつか入れたいかも）
 
 ```
 bun check
 ```
 
+`.env` 等を更新した際は Workers 用の型情報の更新も忘れずに
+
+```
+bun types
+```
+
 `build` と `preview`（まだ動かない）
 
 ```
 bun start
-```
-
-ファイルの通信のテスト（今まで使っていたが必要なくなるもの）
-
-```
-bun dasu
 ```
