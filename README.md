@@ -52,6 +52,12 @@ Astro の開発サーバーを建てる
 bun dev
 ```
 
+ログを詳しく確認できる、色でカテゴライズされててわかりやすい、あとカッコいい
+
+```
+bun dev --verbose
+```
+
 Biome と Prettier を同時に（ESLint か Oxlint をいつか入れたいかも）
 
 ```

@@ -24,6 +24,8 @@ const obj = z.record(
   z.any().refine((v) => v !== undefined && v !== null)
 )
 
+// Loader 何が駄目なんだろうか
+
 export const morau = (options: { list: string; ctype: 'markdown' | 'json' }): Loader => {
   return {
     name: 'morau',
@@ -46,23 +48,25 @@ export const morau = (options: { list: string; ctype: 'markdown' | 'json' }): Lo
             throw new Error(`${kizires.status}`)
           }
           const kizic = await kaesu(kizires, options.ctype)
-          const { frontmatter, content } = await henkan(kizic)
-          const result = obj.safeParse(frontmatter)
-          if (!result.success) {
-            throw new Error(String(result.error))
-          } else {
-            const safef = result.data
-            const parsed = await parseData({ id: safef.slug, data: safef })
-            const digest = generateDigest(parsed)
-            const rendered = {
-              html: content,
+          if (options.ctype === 'markdown') {
+            const { frontmatter, content } = await henkan(kizic)
+            const result = obj.safeParse(frontmatter)
+            if (!result.success) {
+              throw new Error(String(result.error))
+            } else {
+              const safef = result.data
+              const parsed = await parseData({ id: safef.slug, data: safef })
+              const digest = generateDigest(parsed)
+              const rendered = {
+                html: content,
+              }
+              store.set({
+                id: safef.slug,
+                data: parsed.data,
+                rendered,
+                digest,
+              })
             }
-            store.set({
-              id: safef.slug,
-              data: parsed.data,
-              rendered,
-              digest,
-            })
           }
         })
       )
