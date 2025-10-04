@@ -1,9 +1,13 @@
+import 'dotenv/config'
+
 // import { reference, z } from 'astro:content'
-import { env } from 'cloudflare:workers'
+// import { env } from 'cloudflare:workers'
 import { Sha256 } from '@aws-crypto/sha256-js'
 import { HttpRequest } from '@smithy/protocol-http'
 import { SignatureV4 } from '@smithy/signature-v4'
 import { Hono } from 'hono'
+
+const env = process.env
 
 const app = new Hono()
 
@@ -26,7 +30,7 @@ app.get('/:name', async (c) => {
 export default app
 
 export async function getk(ps: string) {
-  return await kiziloader({ john: ps, ctype: 'application/json' })
+  return await kiziloader({ john: ps })
 }
 
 // return await kiziloader({ john: 'f1906c5ce3', ctype: 'text/markdown; charset=utf-8' })
@@ -42,23 +46,11 @@ export async function getk(ps: string) {
 
 // 22:52 john というのは json name のことで、私は json をジョンソンと呼んでいる
 
-const kiziloader = async (options: { john: string; ctype: string }) => {
-  // const schema = kizischema
-  return await kiziload(options.john, options.ctype)
+const kiziloader = async (options: { john: string }) => {
+  return await kiziload(options.john)
 }
 
-// const kizischema = z.object({
-//   title: z.string(),
-//   description: z.string(),
-//   slug: z.string(),
-//   date: z.string(),
-//   daowari: z.string(),
-//   update: z.string(),
-//   upowari: z.string(),
-//   tags: z.array(reference('tags')),
-// })
-
-const kiziload = async (john: string, ctype: string) => {
+const kiziload = async (john: string) => {
   const request = new HttpRequest({
     protocol: 'http:',
     hostname: env.ENDPOINT_NOT_LOCALHOST,
@@ -77,13 +69,13 @@ const kiziload = async (john: string, ctype: string) => {
     if (!res.ok) {
       return new Response(`error: ${res.statusText}`, {
         status: res.status,
-        headers: { 'content-type': 'text/plain' },
+        headers: { 'content-type': 'text/plain; charset=utf-8' },
       })
     }
     const ctx = await res.text()
     return new Response(ctx, {
       status: 200,
-      headers: { 'content-type': ctype },
+      headers: { 'content-type': res.headers.get('content-type') || 'text/plain; charset=utf-8' },
     })
   } catch (err) {
     return new Response(String(err), {

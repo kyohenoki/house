@@ -12,7 +12,8 @@
     "types": "wrangler types",
     "ageru": "tsx src/ageru/cmd.ts",
     "dasu": "wrangler dev --env dasu",
-    "reset": "./cmd.sh reset"
+    "reset": "./cmd.sh reset",
+    "test": "vitest"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^12.6.9",
@@ -21,12 +22,14 @@
     "@astrojs/sitemap": "^3.6.0",
     "@aws-crypto/sha256-js": "^5.2.0",
     "@aws-sdk/client-s3": "^3.901.0",
+    "@mdx-js/mdx": "^3.1.1",
     "@smithy/protocol-http": "^5.3.0",
     "@smithy/signature-v4": "^5.3.0",
     "astro": "^5.14.1",
     "date-fns": "^4.1.0",
     "dotenv": "^17.2.3",
     "globby": "^15.0.0",
+    "gray-matter": "^4.0.3",
     "hono": "^4.9.9",
     "idtsukuru": "^0.2.0",
     "jotai": "^2.15.0",
@@ -48,6 +51,7 @@
     "tailwindcss": "^4.1.14",
     "tsx": "^4.20.6",
     "typescript": "^5.9.3",
+    "vitest": "^3.2.4",
     "wrangler": "^4.42.0"
   },
   "trustedDependencies": [

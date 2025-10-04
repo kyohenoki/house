@@ -1,8 +1,13 @@
 import { defineCollection, reference, z } from 'astro:content'
 import { glob } from 'astro/loaders'
 
+import { morau } from './loader/morau'
+
 const kizis = defineCollection({
-  loader: glob({ pattern: '**/[!_]*.mdx', base: './src/content/kiroku' }),
+  loader: morau({
+    list: 'kizis.json',
+    ctype: 'markdown',
+  }),
   schema: z.object({
     title: z.string(),
     description: z.string(),

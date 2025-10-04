@@ -8,7 +8,14 @@ import { getCollection } from 'astro:content'
 
 export const prerender = false
 
-const kizi = Astro.params.kizi ?? ''
+const { kizi } = Astro.params
+
+if (!kizi) {
+  return new Response(null, {
+    status: 404,
+    statusText: 'nanimonai',
+  })
+}
 
 const nakami = await getEntry('kizis', kizi)
 const tags = await getCollection('tags')

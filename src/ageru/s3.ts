@@ -46,7 +46,7 @@ async function createBucket(name: string) {
 async function upload() {
   const kizis = await sagasu('.', '../content/kiroku', 'mdx')
   const tags = await sagasu('.', '../content/tags', 'json')
-  await kaku(kizis, bucket, 'text/markdown', 'mdx', 'kizis.json', 'text')
+  await kaku(kizis, bucket, 'text/plain; charset=utf-8', 'mdx', 'kizis.json', 'text')
   await kaku(tags, bucket, 'application/json', 'json', 'tags.json', 'text')
 }
 

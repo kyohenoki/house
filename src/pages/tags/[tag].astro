@@ -8,7 +8,14 @@ import { miseru, tomili } from '@/katachi/zikan'
 
 export const prerender = false
 
-const tag = Astro.params.tag ?? ''
+const { tag } = Astro.params
+
+if (!tag) {
+  return new Response(null, {
+    status: 404,
+    statusText: 'nanimonai',
+  })
+}
 
 const nakami = await getEntry('tags', tag)
 
