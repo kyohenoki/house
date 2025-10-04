@@ -20,7 +20,7 @@
     },
     "dasu": {
       "name": "dasu",
-      "main": "./src/content/loader/dasu.ts",
+      "main": "./src/content/loader/hono.ts",
     },
   },
 }

@@ -1,36 +1,11 @@
-import 'dotenv/config'
-
 // import { reference, z } from 'astro:content'
-// import { env } from 'cloudflare:workers'
+
 import { Sha256 } from '@aws-crypto/sha256-js'
 import { HttpRequest } from '@smithy/protocol-http'
 import { SignatureV4 } from '@smithy/signature-v4'
-import { Hono } from 'hono'
 
-const env = process.env
-
-const app = new Hono()
-
-app.get('/', (c) => {
-  return c.text('S3（R2互換、Localstack）とのファイルの通信\nURLにファイル名を書いてアクセスする')
-})
-
-app.get('/:name', async (c) => {
-  const id = c.req.param('name')
-  const res = await getk(id)
-  if (res.status === 404) {
-    return c.text('その名前のファイルは存在しないみたい', 404)
-  } else if (!res.ok) {
-    return c.text('何かがおかしいね', 500)
-  } else {
-    return res
-  }
-})
-
-export default app
-
-export async function getk(ps: string) {
-  return await kiziloader({ john: ps })
+export async function getk(ps: string, envs: Envs) {
+  return await kiziloader({ john: ps, envs })
 }
 
 // return await kiziloader({ john: 'f1906c5ce3', ctype: 'text/markdown; charset=utf-8' })
@@ -46,11 +21,20 @@ export async function getk(ps: string) {
 
 // 22:52 john というのは json name のことで、私は json をジョンソンと呼んでいる
 
-const kiziloader = async (options: { john: string }) => {
-  return await kiziload(options.john)
+const kiziloader = async (options: { john: string; envs: Envs }) => {
+  return await kiziload(options.john, options.envs)
 }
 
-const kiziload = async (john: string) => {
+export type Envs = {
+  LOCALSTACK_ENDPOINT: string
+  ENDPOINT_NOT_LOCALHOST: string
+  AWS_ACCESS_KEY_ID: string
+  AWS_SECRET_ACCESS_KEY: string
+  AWS_REGION: string
+  BUCKET_NAME: string
+}
+
+const kiziload = async (john: string, env: Envs) => {
   const request = new HttpRequest({
     protocol: 'http:',
     hostname: env.ENDPOINT_NOT_LOCALHOST,
@@ -59,6 +43,15 @@ const kiziload = async (john: string) => {
     headers: {
       host: env.ENDPOINT_NOT_LOCALHOST,
     },
+  })
+  const signer = new SignatureV4({
+    service: 's3',
+    region: env.AWS_REGION,
+    credentials: {
+      accessKeyId: env.AWS_ACCESS_KEY_ID,
+      secretAccessKey: env.AWS_SECRET_ACCESS_KEY,
+    },
+    sha256: Sha256,
   })
   const signed = await signer.sign(request)
   const url = `${signed.protocol}//${signed.hostname}${signed.path}`
@@ -83,13 +76,3 @@ const kiziload = async (john: string) => {
     })
   }
 }
-
-const signer = new SignatureV4({
-  service: 's3',
-  region: env.AWS_REGION,
-  credentials: {
-    accessKeyId: env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: env.AWS_SECRET_ACCESS_KEY,
-  },
-  sha256: Sha256,
-})

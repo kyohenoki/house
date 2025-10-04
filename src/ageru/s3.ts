@@ -4,8 +4,8 @@ import { createHash } from 'node:crypto'
 import { readFile } from 'node:fs/promises'
 import path from 'node:path'
 import { CreateBucketCommand, GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
-import { z } from 'astro/zod'
 import { tsukuru } from 'idtsukuru'
+import { z } from 'zod'
 import { directory, sagasu } from './files'
 
 const Envs = z.object({

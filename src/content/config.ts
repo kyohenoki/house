@@ -4,10 +4,7 @@ import { glob } from 'astro/loaders'
 import { morau } from './loader/morau'
 
 const kizis = defineCollection({
-  loader: morau({
-    list: 'kizis.json',
-    ctype: 'markdown',
-  }),
+  loader: morau({ list: 'kizis.json', ctype: 'markdown' }),
   schema: z.object({
     title: z.string(),
     description: z.string(),
