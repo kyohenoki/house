@@ -1,5 +1,5 @@
 import cloudflare from '@astrojs/cloudflare'
-// import mdx from '@astrojs/mdx'
+import mdx from '@astrojs/mdx'
 import react from '@astrojs/react'
 import sitemap from '@astrojs/sitemap'
 import tailwindcss from '@tailwindcss/vite'
@@ -10,15 +10,15 @@ export default defineConfig({
   integrations: [
     sitemap(),
     react(),
-    // mdx({
-    //   syntaxHighlight: 'shiki',
-    //   shikiConfig: {
-    //     themes: {
-    //       light: 'vitesse-light',
-    //       dark: 'vitesse-dark',
-    //     },
-    //   },
-    // }),
+    mdx({
+      syntaxHighlight: 'shiki',
+      shikiConfig: {
+        themes: {
+          light: 'vitesse-light',
+          dark: 'vitesse-dark',
+        },
+      },
+    }),
     (await import('@playform/compress')).default(),
   ],
   vite: {
