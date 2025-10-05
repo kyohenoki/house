@@ -1,9 +1,11 @@
 import 'dotenv/config'
 
 import { reference, z } from 'astro:content'
+import rehypeShiki from '@shikijs/rehype'
 import type { Loader, LoaderContext } from 'astro/loaders'
 import matter from 'gray-matter'
-import remarkStringify from 'rehype-stringify'
+import rehypeStringify from 'rehype-stringify'
+import remarkCjk from 'remark-cjk-friendly'
 import remarkFrontmatter from 'remark-frontmatter'
 import remarkGfm from 'remark-gfm'
 import remarkMdx from 'remark-mdx'
@@ -126,8 +128,15 @@ async function henkan(ctx: string) {
     .use(remarkMdx)
     .use(remarkFrontmatter, ['yaml'])
     .use(remarkGfm)
+    .use(remarkCjk)
     .use(remarkRehype)
-    .use(remarkStringify)
+    .use(rehypeShiki, {
+      themes: {
+        light: 'vitesse-light',
+        dark: 'vitesse-dark',
+      },
+    })
+    .use(rehypeStringify)
     .process(mdx)
   const html = String(file)
   return {
