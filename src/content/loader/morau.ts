@@ -1,7 +1,15 @@
 import 'dotenv/config'
 
-import { z } from 'astro:content'
+import { reference, z } from 'astro:content'
 import type { Loader, LoaderContext } from 'astro/loaders'
+import matter from 'gray-matter'
+import remarkStringify from 'rehype-stringify'
+import remarkFrontmatter from 'remark-frontmatter'
+import remarkGfm from 'remark-gfm'
+import remarkMdx from 'remark-mdx'
+import remarkParse from 'remark-parse'
+import remarkRehype from 'remark-rehype'
+import { unified } from 'unified'
 import { getk } from './dasu'
 
 const envs = process.env
@@ -10,40 +18,89 @@ const envs = process.env
 // 15:03 tags に限りいけた！！次は kizis に挑む
 
 export const watasu = (options: { list: 'kizis.json' | 'tags.json'; ctype: 'markdown' | 'json' }): Loader => {
-  return {
-    name: 'watasu',
-    schema: z.object({
-      name: z.string(),
-      description: z.string(),
-      romazi: z.string(),
-    }),
-    load: async (context: LoaderContext) => {
-      context.logger.info('loading')
-      context.store.clear()
-      const listres = await getk(options.list, envs)
-      if (!listres.ok) {
-        throw new Error(`${listres.status}`)
-      }
-      const listjson: John = await listres.json()
-      await Promise.all(
-        listjson.paths.map(async (m) => {
-          const komokures = await getk(m.key, envs)
-          if (!komokures.ok) {
-            if (komokures.status === 404) {
-              console.log(`${komokures.status} and skip`)
-              return
+  if (options.ctype === 'json') {
+    return {
+      name: 'watasu',
+      schema: z.object({
+        name: z.string(),
+        description: z.string(),
+        romazi: z.string(),
+      }),
+      load: async (context: LoaderContext) => {
+        context.logger.info('loading')
+        context.store.clear()
+        const listres = await getk(options.list, envs)
+        if (!listres.ok) {
+          throw new Error(`${listres.status}`)
+        }
+        const listjson: John = await listres.json()
+        await Promise.all(
+          listjson.paths.map(async (m) => {
+            const komokures = await getk(m.key, envs)
+            if (!komokures.ok) {
+              if (komokures.status === 404) {
+                context.logger.warn(`${komokures.status} and skip`)
+                return
+              }
+              throw new Error(`${komokures.status}`)
             }
-            throw new Error(`${komokures.status}`)
-          }
-          const komoku: Komoku = await komokures.json()
-          const parsed = await context.parseData({ id: komoku.romazi, data: komoku })
-          context.store.set({
-            id: komoku.romazi,
-            data: parsed,
+            const komoku: Komoku = await komokures.json()
+            const parsed = await context.parseData({ id: komoku.romazi, data: komoku })
+            context.store.set({
+              id: komoku.romazi,
+              data: parsed,
+            })
           })
-        })
-      )
-    },
+        )
+        context.logger.info('tags complete')
+      },
+    }
+  } else {
+    return {
+      name: 'watasu',
+      schema: z.object({
+        title: z.string(),
+        description: z.string(),
+        slug: z.string(),
+        date: z.string(),
+        daowari: z.string(),
+        update: z.string(),
+        upowari: z.string(),
+        tags: z.array(reference('tags')),
+      }),
+      load: async (context: LoaderContext) => {
+        context.logger.info('loading')
+        context.store.clear()
+        const listres = await getk(options.list, envs)
+        if (!listres.ok) {
+          throw new Error(`${listres.status}`)
+        }
+        const listjson: John = await listres.json()
+        await Promise.all(
+          listjson.paths.map(async (m) => {
+            const kizires = await getk(m.key, envs)
+            if (!kizires.ok) {
+              if (kizires.status === 404) {
+                context.logger.warn(`${kizires.status} and skip`)
+                return
+              }
+              throw new Error(`${kizires.status}`)
+            }
+            const kizi = await kizires.text()
+            const { frontmatter, content } = await henkan(kizi)
+            const parsed = await context.parseData({ id: frontmatter.slug, data: frontmatter })
+            context.store.set({
+              id: parsed.slug,
+              data: parsed,
+              rendered: {
+                html: content,
+              },
+            })
+          })
+        )
+        context.logger.info('kizis complete')
+      },
+    }
   }
 }
 
@@ -60,42 +117,27 @@ type Komoku = {
   romazi: string
 }
 
-// export const watasu = (options: { list: string; ctype: 'markdown' | 'json' }): Loader => {
-//   return {
-//     name: 'watasu',
-//     load: async (context: LoaderContext) => {
-//       context.store.clear()
-//       const listres = await getk(options.list, envs)
-//       if (!listres.ok) {
-//         throw new Error(`${listres.status}`)
-//       }
-//       const listjson: John = await listres.json()
+// ただの文字列なので frontmatter を抽出、Markdown に変換する
 
-//     },
-//   }
-// }
-
-// ---
-
-// import type { Loader } from 'astro/loaders'
-// import matter from 'gray-matter'
-// import remarkStringify from 'rehype-stringify'
-// import remarkFrontmatter from 'remark-frontmatter'
-// import remarkGfm from 'remark-gfm'
-// import remarkMdx from 'remark-mdx'
-// import remarkParse from 'remark-parse'
-// import remarkRehype from 'remark-rehype'
-// import { unified } from 'unified'
-// import { getk } from './dasu'
-
-// DEV は dotenv PROD は cloudflare:workers に分けたいけど
-// なんか上手く行かないので、とりあえず DEV 前提にしておく
-
-// function envdaze() {
-//   return process.env
-// }
+async function henkan(ctx: string) {
+  const { data: frontmatter, content: mdx } = matter(ctx)
+  const file = await unified()
+    .use(remarkParse)
+    .use(remarkMdx)
+    .use(remarkFrontmatter, ['yaml'])
+    .use(remarkGfm)
+    .use(remarkRehype)
+    .use(remarkStringify)
+    .process(mdx)
+  const html = String(file)
+  return {
+    frontmatter,
+    content: html,
+  }
+}
 
 // Loader 何が駄目なんだろうか
+// 25/10/05 15:30 記念のため、残しておく
 
 // export const morau = (options: { list: string; ctype: 'markdown' | 'json' }): Loader => {
 //   return {
@@ -138,32 +180,5 @@ type Komoku = {
 //         })
 //       )
 //     },
-//   }
-// }
-
-// export async function kaesu(res: Response, ctype: string) {
-//   if (ctype === 'markdown') {
-//     return await res.text()
-//   } else {
-//     return await res.text()
-//   }
-// }
-
-// // ただの文字列なので frontmatter を抽出、Markdown に変換する
-
-// export async function henkan(ctx: string) {
-//   const { data: frontmatter, content: mdx } = matter(ctx)
-//   const file = await unified()
-//     .use(remarkParse)
-//     .use(remarkMdx)
-//     .use(remarkFrontmatter, ['yaml'])
-//     .use(remarkGfm)
-//     .use(remarkRehype)
-//     .use(remarkStringify)
-//     .process(mdx)
-//   const html = String(file)
-//   return {
-//     frontmatter,
-//     content: html,
 //   }
 // }
