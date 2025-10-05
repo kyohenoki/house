@@ -1,31 +1,49 @@
 import 'dotenv/config'
+
+import { z } from 'astro:content'
+import type { Loader, LoaderContext } from 'astro/loaders'
 import { getk } from './dasu'
 
 const envs = process.env
 
 // 25/10/05 13:49 一度変換とかが比較的簡単な JSON のほうから先にやるか、このままじゃ終わらない
+// 15:03 tags に限りいけた！！次は kizis に挑む
 
-export const watasu = async (options: { list: string; ctype: 'markdown' | 'json' }) => {
-  if (options.ctype === 'json') {
-    const listres = await getk(options.list, envs)
-    if (!listres.ok) {
-      throw new Error(`${listres.status}`)
-    }
-    const listjson: John = await listres.json()
-    await Promise.all(
-      listjson.paths.map(async (m) => {
-        const komokures = await getk(m.key, envs)
-        if (!komokures.ok) {
-          if (komokures.status === 404) {
-            console.log(`${komokures.status} and skip`)
-            return
+export const watasu = (options: { list: 'kizis.json' | 'tags.json'; ctype: 'markdown' | 'json' }): Loader => {
+  return {
+    name: 'watasu',
+    schema: z.object({
+      name: z.string(),
+      description: z.string(),
+      romazi: z.string(),
+    }),
+    load: async (context: LoaderContext) => {
+      context.logger.info('loading')
+      context.store.clear()
+      const listres = await getk(options.list, envs)
+      if (!listres.ok) {
+        throw new Error(`${listres.status}`)
+      }
+      const listjson: John = await listres.json()
+      await Promise.all(
+        listjson.paths.map(async (m) => {
+          const komokures = await getk(m.key, envs)
+          if (!komokures.ok) {
+            if (komokures.status === 404) {
+              console.log(`${komokures.status} and skip`)
+              return
+            }
+            throw new Error(`${komokures.status}`)
           }
-          throw new Error(`${komokures.status}`)
-        }
-        const komoku: Komoku = await komokures.json()
-        console.log(`${m.key}\n${komoku.romazi}`)
-      })
-    )
+          const komoku: Komoku = await komokures.json()
+          const parsed = await context.parseData({ id: komoku.romazi, data: komoku })
+          context.store.set({
+            id: komoku.romazi,
+            data: parsed,
+          })
+        })
+      )
+    },
   }
 }
 
