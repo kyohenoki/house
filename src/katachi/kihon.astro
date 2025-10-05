@@ -18,16 +18,11 @@ const { metadata } = Astro.props
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
     <link rel="sitemap" href="/sitemap-index.xml" />
-    <link rel="icon" href="/icon.png" media="(prefers-color-scheme: light)" />
-    <link rel="icon" href="/akarui.png" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" sizes="any" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="preload" as="font" type="font/woff2" href="/fonts/InterVariable.woff2" crossorigin="anonymous" />
-    <script>
-      if (document.querySelector('code')) {
-        const mono = new FontFace('Geist Mono', 'url(/fonts/GeistMono.woff2')
-        mono.load()
-      }
-    </script>
-
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/GeistMono.woff2" crossorigin="anonymous" />
     <title>{metadata.title}</title>
     <meta name="description" content={metadata.description} />
   </head>
