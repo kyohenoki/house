@@ -12,7 +12,7 @@ import remarkMdx from 'remark-mdx'
 import remarkParse from 'remark-parse'
 import remarkRehype from 'remark-rehype'
 import { unified } from 'unified'
-import { getk } from './dasu'
+import { type Envs, getk } from './dasu'
 
 const envs = process.env
 
@@ -29,23 +29,12 @@ export const watasu = (options: { list: 'kizis.json' | 'tags.json'; ctype: 'mark
         romazi: z.string(),
       }),
       load: async (context: LoaderContext) => {
-        context.logger.info('loading')
-        context.store.clear()
-        const listres = await getk(options.list, envs)
-        if (!listres.ok) {
-          throw new Error(`${listres.status}`)
-        }
+        const listres = await hazime(options.list, envs, context)
         const listjson: John = await listres.json()
         await Promise.all(
           listjson.paths.map(async (m) => {
-            const komokures = await getk(m.key, envs)
-            if (!komokures.ok) {
-              if (komokures.status === 404) {
-                context.logger.warn(`${komokures.status} and skip`)
-                return
-              }
-              throw new Error(`${komokures.status}`)
-            }
+            const komokures = await hakizi(m.key, envs, context)
+            if (komokures === 'skip') return
             const komoku: Komoku = await komokures.json()
             const parsed = await context.parseData({ id: komoku.romazi, data: komoku })
             context.store.set({
@@ -71,23 +60,12 @@ export const watasu = (options: { list: 'kizis.json' | 'tags.json'; ctype: 'mark
         tags: z.array(reference('tags')),
       }),
       load: async (context: LoaderContext) => {
-        context.logger.info('loading')
-        context.store.clear()
-        const listres = await getk(options.list, envs)
-        if (!listres.ok) {
-          throw new Error(`${listres.status}`)
-        }
+        const listres = await hazime(options.list, envs, context)
         const listjson: John = await listres.json()
         await Promise.all(
           listjson.paths.map(async (m) => {
-            const kizires = await getk(m.key, envs)
-            if (!kizires.ok) {
-              if (kizires.status === 404) {
-                context.logger.warn(`${kizires.status} and skip`)
-                return
-              }
-              throw new Error(`${kizires.status}`)
-            }
+            const kizires = await hakizi(m.key, envs, context)
+            if (kizires === 'skip') return
             const kizi = await kizires.text()
             const { frontmatter, content } = await henkan(kizi)
             const parsed = await context.parseData({ id: frontmatter.slug, data: frontmatter })
@@ -104,6 +82,28 @@ export const watasu = (options: { list: 'kizis.json' | 'tags.json'; ctype: 'mark
       },
     }
   }
+}
+
+async function hazime(list: string, envs: Envs, context: LoaderContext) {
+  context.logger.info('loading')
+  context.store.clear()
+  const res = await getk(list, envs)
+  if (!res.ok) {
+    throw new Error(`${res.status}`)
+  }
+  return res
+}
+
+async function hakizi(thekey: string, envs: Envs, context: LoaderContext) {
+  const kizires = await getk(thekey, envs)
+  if (!kizires.ok) {
+    if (kizires.status === 404) {
+      context.logger.warn(`${kizires.status} and skip`)
+      return 'skip'
+    }
+    throw new Error(`${kizires.status}`)
+  }
+  return kizires
 }
 
 type John = {

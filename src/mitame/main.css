@@ -27,7 +27,9 @@
   }
 
   .shiki,
-  .shiki span {
+  .shiki span,
+  .astro-code,
+  .astro-code span {
     color: var(--shiki-dark) !important;
     background-color: var(--shiki-dark-bg) !important;
     font-style: var(--shiki-dark-font-style) !important;
@@ -114,5 +116,5 @@ pre code {
 }
 
 .bo {
-  @apply prose-hr:my-9 prose-hr:border-[var(--usu)];
+  @apply prose-hr:my-4 prose-hr:border-[var(--usu)];
 }

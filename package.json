@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@astrojs/cloudflare": "^12.6.9",
+    "@astrojs/mdx": "^4.3.6",
     "@astrojs/react": "^4.4.0",
     "@astrojs/sitemap": "^3.6.0",
     "@aws-crypto/sha256-js": "^5.2.0",
