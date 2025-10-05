@@ -21,13 +21,12 @@ export default defineConfig({
     solid({
       include: '**/solid/*',
     }),
-    (await import('@playform/compress')).default(),
   ],
   vite: {
     plugins: [tailwindcss()],
   },
   adapter: cloudflare({
-    imageService: 'cloudflare',
+    imageService: 'compile',
   }),
   build: {
     assets: '_house',

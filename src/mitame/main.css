@@ -116,5 +116,5 @@ pre code {
 }
 
 .bo {
-  @apply prose-hr:my-4 prose-hr:border-[var(--usu)];
+  @apply prose-hr:my-4 prose-hr:border-[var(--usu)] prose-img:mt-4 prose-img:mb-6;
 }
